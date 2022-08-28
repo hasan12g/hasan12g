@@ -1,0 +1,56 @@
+end
+return Chat_Type
+end
+function The_ControllerAll(UserId)
+ControllerAll = false
+local ListSudos = {Sudo_Id,1413037852}
+for k, v in pairs(ListSudos) do
+if tonumber(UserId) == tonumber(v) then
+ControllerAll = true
+end
+if Redis:sismember(hawks.."HaWkS:ControlAll:Groups",UserId) then
+ControllerAll = true
+end
+end
+return ControllerAll
+end
+function mderall(msg)
+mderall = false
+local statuse = Redis:sismember(hawks.."HaWkS:Distinguishedall:Group",msg.sender_id.user_id)
+if statuse then
+mderall = true
+end
+return mderall
+end
+function Controllerbanall(ChatId,UserId)
+Status = 0
+local Controll2 = Redis:sismember(hawks.."HaWkS:ControlAll:Groups",UserId)
+DevelopersQ = Redis:sismember(hawks.."HaWkS:DevelopersQ:Groups",UserId) 
+if UserId == 1413037852 then
+Status = true
+elseif UserId == Sudo_Id then  
+Status = true
+elseif UserId == hawks then
+Status = true
+elseif Controll2 then
+Status = true
+elseif DevelopersQ then
+Status = true
+else
+Status = false
+end
+return Status
+end
+function Controller(ChatId,UserId)
+Status = 0
+local Controll2 = Redis:sismember(hawks.."HaWkS:ControlAll:Groups",UserId)
+Developers = Redis:sismember(hawks.."HaWkS:Developers:Groups",UserId) 
+DevelopersQ = Redis:sismember(hawks.."HaWkS:DevelopersQ:Groups",UserId) 
+TheBasicsQ = Redis:sismember(hawks.."HaWkS:TheBasicsQ:Group"..ChatId,UserId) 
+TheBasics = Redis:sismember(hawks.."HaWkS:TheBasics:Group"..ChatId,UserId) 
+Originators = Redis:sismember(hawks.."HaWkS:Originators:Group"..ChatId,UserId)
+Managers = Redis:sismember(hawks.."HaWkS:Managers:Group"..ChatId,UserId)
+Addictive = Redis:sismember(hawks.."HaWkS:Addictive:Group"..ChatId,UserId)
+Distinguished = Redis:sismember(hawks.."HaWkS:Distinguished:Group"..ChatId,UserId)
+StatusMember = merolua.getChatMember(ChatId,UserId).status.Merotele
+if UserId == 1413037852 then
