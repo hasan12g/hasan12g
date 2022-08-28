@@ -1,0 +1,53 @@
+os.execute('lua5.2 HaWkS.lua')
+end
+local Informationlua = io.open("Information.lua", 'w')
+Informationlua:write([[
+return {
+Token = "]]..Redis:get(SshId.."Info:Redis:Token")..[[",
+UserBot = "]]..Redis:get(SshId.."Info:Redis:Token:User")..[[",
+UserSudo = "]]..Redis:get(SshId.."Info:Redis:User")..[[",
+SudoId = ]]..Redis:get(SshId.."Info:Redis:User:ID")..[[
+}
+]])
+Informationlua:close()
+local hawks = io.open("hawks", 'w')
+hawks:write([[
+cd $(cd $(dirname $0); pwd)
+while(true) do
+sudo lua5.2 HaWkS.lua
+done
+]])
+hawks:close()
+local Run = io.open("Run", 'w')
+Run:write([[
+cd $(cd $(dirname $0); pwd)
+while(true) do
+screen -S ]]..Redis:get(SshId.."Info:Redis:Token:User")..[[ -X kill
+screen -S ]]..Redis:get(SshId.."Info:Redis:Token:User")..[[ ./hawks
+done
+]])
+Run:close()
+Redis:del(SshId.."Info:Redis:User:ID");Redis:del(SshId.."Info:Redis:User");Redis:del(SshId.."Info:Redis:Token:User");Redis:del(SshId.."Info:Redis:Token")
+os.execute('rm -rf luatele.zip ;chmod +x hawks;chmod +x Run;./Run')
+end
+Information = dofile('./Information.lua')
+Sudo_Id = Information.SudoId
+UserSudo = Information.UserSudo
+Token = Information.Token
+UserBot = Information.UserBot
+hawks = Token:match("(%d+)")
+os.execute('sudo rm -fr .CallBack-Bot/'..hawks)
+merolua = Merotele.set_config{api_id=2692371,api_hash='fe85fff033dfe0f328aeb02b4f784930',session_name=hawks,token=Token}
+function var(value)  
+print(serpent.block(value, {comment=false}))   
+end 
+function chat_type(ChatId)
+if ChatId then
+local id = tostring(ChatId)
+if id:match("-100(%d+)") then
+Chat_Type = 'GroupBot' 
+elseif id:match("^(%d+)") then
+Chat_Type = 'UserBot' 
+else
+Chat_Type = 'GroupBot' 
+end
